@@ -1,0 +1,13 @@
+*.lib
+*.dll
+*.tlog
+*.log
+*.obj
+*.db
+*.pdb
+*.json
+*.vsidx
+*.ipch
+*.bin
+*.recipe
+Server/code/openbsd
