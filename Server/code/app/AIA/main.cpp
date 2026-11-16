@@ -46,10 +46,7 @@
 #include <algorithm>
 #include <cctype>
 
-// 客户端配置（名称 / 服务器地址 / 连接密码），从 exe 同目录 server.cfg 读取
-static std::string g_client_name = "音箱";
-static std::string g_server_address = "127.0.0.1";
-
+// 配置从 exe 同目录 server.cfg 读取
 std::string g_username = "AIAUsername";
 std::string g_passwd = "AIAPasswd";
 std::string g_server_pwd = "MyAIAServer";
@@ -65,7 +62,7 @@ static std::string trim(const std::string& s) {
     return s.substr(b, e - b + 1);
 }
 
-// 从 <exe目录>/client.cfg 读取配置，文件不存在或某字段缺失时使用默认值。
+// 读取配置，文件不存在或某字段缺失时使用默认值。
 // 文件格式：每行 key=value，# 开头为注释。
 static void loadConfigFromFile()
 {
@@ -73,7 +70,7 @@ static void loadConfigFromFile()
     char processname[1024] = { 0 };
     ICPPFile::GetExecutablePath(path, processname, sizeof(path));
 
-    std::string cfgPath = std::string(path) + "client.cfg";
+    std::string cfgPath = std::string(path) + "server.cfg";
     std::ifstream ifs(cfgPath);
     if (!ifs.is_open()) {
         std::cerr << "未找到配置文件 " << cfgPath << "，使用默认配置" << std::endl;
@@ -88,9 +85,12 @@ static void loadConfigFromFile()
         if (eq == std::string::npos) continue;
         std::string key = trim(t.substr(0, eq));
         std::string val = trim(t.substr(eq + 1));
-        if (key == "name")     g_client_name = val;
-        else if (key == "address") g_server_address = val;
-        else if (key == "password") g_server_pwd = val;
+        if (key == "username")     g_username = val;
+        else if (key == "password") g_passwd = val;
+        else if (key == "server_passwd") g_server_pwd = val;
+        else if (key == "due_date_year") g_dueDateYear = std::stoi(val);
+        else if (key == "due_date_month") g_dueDateMonth = std::stoi(val);
+        else if (key == "due_date_day") g_dueDateDay = std::stoi(val);
     }
 }
 
@@ -136,6 +136,9 @@ protected:
 
 int main(int argc, char* argv[])
 {
+    // 从配置文件读取配置
+    loadConfigFromFile();
+
     char path[1024] = { 0 };
     char processname[1024] = { 0 };
     ICPPFile::GetExecutablePath(path, processname, sizeof(path));

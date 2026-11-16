@@ -50,6 +50,77 @@ extern int g_dueDateYear;
 extern int g_dueDateMonth;
 extern int g_dueDateDay;
 
+// 将g_server_pwd更新到server.cfg
+static void UpdateServerPwdToCfg(const char* key, const char* val)
+{
+    char path[1024] = { 0 };
+    char processname[1024] = { 0 };
+    ICPPFile::GetExecutablePath(path, processname, sizeof(path));
+
+    std::string cfgPath = std::string(path) + "server.cfg";
+
+    // 先读取整个配置文件内容
+    FILE* fp = nullptr;
+    fopen_s(&fp, cfgPath.c_str(), "r");
+    if (fp == nullptr)
+    {
+        printf("UpdateServerPwdToCfg fopen error: %s\n", cfgPath.c_str());
+        return;
+    }
+
+    std::vector<std::string> vLines;
+    bool bFound = false;
+
+    if (fp)
+    {
+        char szBuf[1024];
+        while (fgets(szBuf, sizeof(szBuf), fp))
+        {
+            std::string strLine = szBuf;
+            // 移除末尾换行符
+            while (!strLine.empty() && (strLine.back() == '\n' || strLine.back() == '\r'))
+                strLine.pop_back();
+
+            // 检查是否为server_passwd配置行
+            if (strLine.find(key) == 0)
+            {
+                // 替换为新的密码
+                char szNewLine[1024];
+                snprintf(szNewLine, sizeof(szNewLine), "%s=%s", key, val);
+                strLine = szNewLine;
+                bFound = true;
+            }
+            vLines.push_back(strLine);
+        }
+        fclose(fp);
+    }
+
+    // 如果没有找到server_passwd行，追加到末尾
+    if (!bFound)
+    {
+        char szNewLine[1024];
+        snprintf(szNewLine, sizeof(szNewLine), "%s=%s", key, val);
+        vLines.push_back(szNewLine);
+    }
+
+    // 写回配置文件
+    fopen_s(&fp, cfgPath.c_str(), "w");
+    if (fp == nullptr)
+    {
+        printf("UpdateServerPwdToCfg fopen error: %s\n", cfgPath.c_str());
+        return;
+    }
+    
+    if (fp)
+    {
+        for (size_t i = 0; i < vLines.size(); ++i)
+        {
+            fprintf(fp, "%s\n", vLines[i].c_str());
+        }
+        fclose(fp);
+    }
+}
+
 #if defined (WIN32) | defined (WIN64)
 int GetMac(CCPPString *pszMac)
 { 
@@ -687,6 +758,7 @@ void AIA::on_m_modify_password_clicked()
         QString newPwd = edit->text();
         g_server_pwd = newPwd.toStdString();
         //写入配置文件
+        UpdateServerPwdToCfg("server_passwd", g_server_pwd.c_str());
 
         m_connect_pwd = g_server_pwd;
         TCP_HTTP_Server* srv = get_server_instance();
@@ -967,6 +1039,11 @@ void AIA::GetMemInfo(const char* username, const char* passwd, MembershipInfo* m
             if(loginSuccess)
             {
                 //写文件
+                UpdateServerPwdToCfg("username", g_username.c_str());
+                UpdateServerPwdToCfg("password", g_passwd.c_str());
+                UpdateServerPwdToCfg("due_date_year", std::to_string(g_dueDateYear).c_str());
+                UpdateServerPwdToCfg("due_date_month", std::to_string(g_dueDateMonth).c_str());
+                UpdateServerPwdToCfg("due_date_day", std::to_string(g_dueDateDay).c_str());
             }
         }
         catch (const std::exception& e) {

@@ -183,13 +183,22 @@ Copy /D "$(Solutiondir)*.bat"  "$(TargetDir)"</Command>
     <PostBuildEvent>
       <Command>Copy /D "$(Solutiondir)..\..\code\openbsd\os\lib\$(Platform)\Release\*.dll"  "$(TargetDir)"
 
+
+
 Copy /D "$(Solutiondir)..\..\code\openbsd\qt\lib\$(Platform)\$(Configuration)\*.dll"  "$(TargetDir)"
+
 mkdir "$(TargetDir)platforms\"
+
 Copy /D "$(Solutiondir)..\..\code\openbsd\qt\lib\$(Platform)\$(Configuration)\plugins\platforms\*.dll"  "$(TargetDir)platforms\"
+
+
 
 Copy /D "$(Solutiondir)..\..\code\modules\Ui\src\Qrc.rcc"  "$(TargetDir)"
 
-Copy /D "$(Solutiondir)*.bat"  "$(TargetDir)"</Command>
+
+
+Copy /D "$(Solutiondir)*.bat"  "$(TargetDir)"
+Copy /D "$(Solutiondir)*.cfg"  "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

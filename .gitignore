@@ -13,3 +13,5 @@
 *.txt
 Server/code/openbsd
 Server/build/vs2022/app/AIA/x64
+Server/build/vs2022/.vs/vs2022/v17/Browse.*
+Server/build/vs2022/.vs/vs2022/v17/Solution.*
