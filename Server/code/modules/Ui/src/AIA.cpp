@@ -28,7 +28,6 @@
 #include <net/if_arp.h>
 #endif
 
-#include "ConfigApp.h"
 #include "GlobalShortCut.h"
 #include "Server.h"
 
@@ -43,6 +42,13 @@ using json = nlohmann::json;
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QHeaderView>
 #include <functional>
+
+extern std::string g_username;
+extern std::string g_passwd;
+extern std::string g_server_pwd;
+extern int g_dueDateYear;
+extern int g_dueDateMonth;
+extern int g_dueDateDay;
 
 #if defined (WIN32) | defined (WIN64)
 int GetMac(CCPPString *pszMac)
@@ -228,11 +234,7 @@ AIA::AIA(QWidget* parent)
     this->setPalette(palette);
     this->setAutoFillBackground(true);
     
-    //读取配置
-    CConfigApp configApp;
-    configApp.update();
-    CONFIG_APP &cfgApp = configApp.getConfig();
-    m_connect_pwd = cfgApp.serverPassword;
+    m_connect_pwd = g_server_pwd;
 
     // 主人根目录：<exe>/Config/Masters/
     m_mastersDir = CCPPString(path);
@@ -448,10 +450,6 @@ AIA::~AIA()
 
 void AIA::on_m_login_clicked()
 {
-    CConfigApp configApp;
-    configApp.update();
-    CONFIG_APP &cfgApp = configApp.getConfig();
-    
     qreal  scale       = m_scaleFactor;
     auto   s           = [&](int v) -> int { return qRound(v * scale); };
     const char* green  = "#00ff41";
@@ -580,14 +578,14 @@ void AIA::on_m_login_clicked()
     
     mainLayout->addWidget(buttonBox);
     
-    if (strlen(cfgApp.username) > 0)
+    if (strlen(g_username.c_str()) > 0)
     {
-        usernameEdit->setText(QString::fromUtf8(cfgApp.username));
+        usernameEdit->setText(QString::fromUtf8(g_username.c_str()));
     }
     
-    if (strlen(cfgApp.password) > 0)
+    if (strlen(g_passwd.c_str()) > 0)
     {
-        passwordEdit->setText(QString::fromUtf8(cfgApp.password));
+        passwordEdit->setText(QString::fromUtf8(g_passwd.c_str()));
     }
 
     if (dialog.exec() == QDialog::Accepted)
@@ -687,13 +685,10 @@ void AIA::on_m_modify_password_clicked()
 
     QObject::connect(save, &QPushButton::clicked, [&]() {
         QString newPwd = edit->text();
-        CConfigApp configApp;
-        configApp.update();
-        CONFIG_APP& cfgApp = configApp.getConfig();
-        strncpy_s(cfgApp.serverPassword, sizeof(cfgApp.serverPassword), newPwd.toUtf8().constData(), _TRUNCATE);
-        configApp.commit();
+        g_server_pwd = newPwd.toStdString();
+        //写入配置文件
 
-        m_connect_pwd = newPwd.toStdString();
+        m_connect_pwd = g_server_pwd;
         TCP_HTTP_Server* srv = get_server_instance();
         if (srv) srv->set_connect_password(m_connect_pwd);
         m_connect_pwd_pushed = true;
@@ -785,11 +780,7 @@ int AIA::ThreadProc(CCPPMessageT* msg, uint timestamp, uint& timeout)
         //线程启动调用一次
         if(CPPMSG_START == msg->Command())
         {
-            CConfigApp configApp;
-            configApp.update();
-            CONFIG_APP& cfgApp = configApp.getConfig();
-            
-            if (strlen(cfgApp.username) == 0 || strlen(cfgApp.password) == 0)
+            if (strlen(g_username.c_str()) == 0 || strlen(g_passwd.c_str()) == 0)
             {
                 SetStatusText("用户未登录，请访问官网注册账户后登录");
                 emit SigUpdateStatusLabel();
@@ -799,7 +790,7 @@ int AIA::ThreadProc(CCPPMessageT* msg, uint timestamp, uint& timeout)
             else
             {
                 CCPPString loginStr;
-                loginStr.Append("用户 %s 登录中", cfgApp.username);
+                loginStr.Append("用户 %s 登录中", g_username.c_str());
                 SetStatusText(loginStr.GetBuffer());
                 emit SigUpdateStatusLabel();
             }
@@ -815,7 +806,7 @@ int AIA::ThreadProc(CCPPMessageT* msg, uint timestamp, uint& timeout)
                 true,    // mac_changed
                 ""       // mac_change_message
             };
-            GetMemInfo(cfgApp.username, cfgApp.password, &info);
+            GetMemInfo(g_username.c_str(), g_passwd.c_str(), &info);
         }
     }
     else
@@ -903,9 +894,6 @@ void AIA::GetMemInfo(const char* username, const char* passwd, MembershipInfo* m
         return ;
     }
     
-    CConfigApp configApp;
-    configApp.update();
-    CONFIG_APP& cfgApp = configApp.getConfig();
     int loginSuccess = 0;
     
     CCPPString host = "https://liangqin.cc";
@@ -964,22 +952,21 @@ void AIA::GetMemInfo(const char* username, const char* passwd, MembershipInfo* m
             {
                 loginSuccess = 1;
                 
-                strcpy_s(cfgApp.username, username);
-                strcpy_s(cfgApp.password, passwd);
+                g_username = username;
+                g_passwd = passwd;
 
                 int year, month, day, hour, minute, second;
                 if (sscanf_s(meminfo->expiry_time.c_str(), "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second) == 6)
                 {
-                    cfgApp.dueDate.year = year;
-                    cfgApp.dueDate.month = month;
-                    cfgApp.dueDate.day = day;
-                    printf("cfg:%d %d %d\n", cfgApp.dueDate.year, cfgApp.dueDate.month, cfgApp.dueDate.day);
+                    g_dueDateYear = year;
+                    g_dueDateMonth = month;
+                    g_dueDateDay = day;
                 }
             }
 
             if(loginSuccess)
             {
-                configApp.commit();
+                //写文件
             }
         }
         catch (const std::exception& e) {
@@ -1024,8 +1011,8 @@ void AIA::GetMemInfo(const char* username, const char* passwd, MembershipInfo* m
     else
     {
         int year = 2026;
-        int month = 1;
-        int day = 1;
+        int month = 11;
+        int day = 11;
 
 #if defined(WIN32) || defined(WIN64)
         // Windows 平台使用 localtime_s
@@ -1044,8 +1031,7 @@ void AIA::GetMemInfo(const char* username, const char* passwd, MembershipInfo* m
         month = tm_now.tm_mon + 1;
         day = tm_now.tm_mday;
 #endif
-        printf("cur[%d %d %d] cfg[%d %d %d]\n", year, month, day, cfgApp.dueDate.year, cfgApp.dueDate.month, cfgApp.dueDate.day);
-        if(is_expired(cfgApp.dueDate.year, cfgApp.dueDate.month, cfgApp.dueDate.day, year, month, day))
+        if(is_expired(g_dueDateYear, g_dueDateMonth, g_dueDateDay, year, month, day))
         {
             m_is_expired = 1;
         }

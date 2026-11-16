@@ -168,7 +168,7 @@ Copy /D "$(Solutiondir)*.bat"  "$(TargetDir)"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\code\modules\json\inc;$(SolutionDir)..\..\code\modules\GlobalShortCut\inc;$(SolutionDir)..\..\code\modules\ConfigManager\inc;$(SolutionDir)..\..\code\modules\Server\inc;$(SolutionDir)..\..\code\modules\Ui\inc;$(SolutionDir)..\..\code\modules\CPPBase\inc;$(SolutionDir)..\..\code\openbsd\qt\inc;$(SolutionDir)..\..\code\openbsd\nlohmann_json\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\code\modules\GlobalShortCut\inc;$(SolutionDir)..\..\code\modules\Server\inc;$(SolutionDir)..\..\code\modules\Ui\inc;$(SolutionDir)..\..\code\openbsd\CPPBase\inc;$(SolutionDir)..\..\code\openbsd\qt\inc;$(SolutionDir)..\..\code\openbsd\nlohmann_json\inc</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -177,7 +177,7 @@ Copy /D "$(Solutiondir)*.bat"  "$(TargetDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\code\modules\Ui\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\modules\Server\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\modules\ConfigManager\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\modules\json\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\modules\GlobalShortCut\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\modules\CPPBase\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\openbsd\openssl\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\openbsd\zlib\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\openbsd\qt\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\code\modules\Ui\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\modules\Server\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\modules\GlobalShortCut\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\openbsd\CPPBase\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\openbsd\openssl\lib\$(Platform)\$(Configuration)\;$(SolutionDir)..\..\code\openbsd\qt\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>

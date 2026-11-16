@@ -10,4 +10,6 @@
 *.ipch
 *.bin
 *.recipe
+*.txt
 Server/code/openbsd
+Server/build/vs2022/app/AIA/x64

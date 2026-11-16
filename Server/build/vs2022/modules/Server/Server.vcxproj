@@ -147,7 +147,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN64;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\code\modules\$(ProjectName)\inc;$(SolutionDir)..\..\code\openbsd\nlohmann_json\inc;$(SolutionDir)..\..\code\modules\Speak\inc;$(SolutionDir)..\..\code\modules\CPPBase\inc;$(SolutionDir)..\..\code\modules\AudioDevice\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\code\modules\$(ProjectName)\inc;$(SolutionDir)..\..\code\openbsd\nlohmann_json\inc</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>

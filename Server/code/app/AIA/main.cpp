@@ -14,32 +14,48 @@
 
 #pragma comment(lib, "Ui.lib")
 #pragma comment(lib, "Server.lib")
-#pragma comment(lib, "ConfigManager.lib")
-#pragma comment(lib, "CPPBase.lib")
 #pragma comment(lib, "GlobalShortCut.lib")
-#pragma comment(lib, "json.lib")
+
+#pragma comment(lib, "CPPBase.lib")
 
 #pragma comment(lib, "libcrypto.lib")
 #pragma comment(lib, "libssl.lib")
-
-#pragma comment(lib, "zlib.lib")
 
 #pragma comment(lib, "Qt5Core.lib")
 #pragma comment(lib, "Qt5Gui.lib")
 #pragma comment(lib, "Qt5Widgets.lib")
 #endif //defined(WIN32) || defined(WIN64)
 
+#if defined(WIN32) || defined(WIN64)
+// winsock2.h 必须在 windows.h 之前包含，避免与 Server.h 中的 winsock2 重复定义冲突
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#endif
+
 #include <QtWidgets/QApplication>
 
-#include "ConfigManager.h"
 #include "GlobalShortCut.h"
 #include "AIA.h"
 #include "Server.h"
+#include "CPPBase.h"
 
-// 客户端配置（名称 / 服务器地址 / 连接密码），从 exe 同目录 client.cfg 读取
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <fstream>
+#include <algorithm>
+#include <cctype>
+
+// 客户端配置（名称 / 服务器地址 / 连接密码），从 exe 同目录 server.cfg 读取
 static std::string g_client_name = "音箱";
 static std::string g_server_address = "127.0.0.1";
-static std::string g_server_pwd = "MyAIAServer";
+
+std::string g_username = "AIAUsername";
+std::string g_passwd = "AIAPasswd";
+std::string g_server_pwd = "MyAIAServer";
+int g_dueDateYear = 2026;
+int g_dueDateMonth = 11;
+int g_dueDateDay = 11;
 
 // 去除首尾空白
 static std::string trim(const std::string& s) {
@@ -137,12 +153,7 @@ int main(int argc, char* argv[])
 #endif
     
     RegisterHotKeyCallback("Ctrl+Alt+5", Key_Ctrl_Alt_5_Press_Callback, []() {});
-    
-    //配置模块启动
-    CCPPString configDir(path);
-    configDir += "Config";
-    CConfigManager::instance()->initialize(APP_AIA, configDir.GetBuffer());
-    
+        
     //主界面启动
     AIA* instance = AIA::instance();
     if (NULL != instance)
