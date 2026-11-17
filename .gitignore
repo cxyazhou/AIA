@@ -23,3 +23,12 @@ PlayAudio/code/openbsd
 PlayAudio/build/vs2022/app/AIA/x64
 PlayAudio/build/vs2022/.vs/vs2022/v17/Browse.*
 PlayAudio/build/vs2022/.vs/vs2022/v17/Solution.*
+ASR/code/modules/FunAsrOnnxRuntime/src/model
+ASR/code/openbsd
+ASR/build/vs2022/app/AIA/x64
+ASR/build/vs2022/.vs/vs2022/v17/Browse.*
+ASR/build/vs2022/.vs/vs2022/v17/Solution.*
+TTS/code/openbsd
+TTS/build/vs2022/app/AIA/x64
+TTS/build/vs2022/.vs/vs2022/v17/Browse.*
+TTS/build/vs2022/.vs/vs2022/v17/Solution.*
