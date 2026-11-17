@@ -15,3 +15,11 @@ Server/code/openbsd
 Server/build/vs2022/app/AIA/x64
 Server/build/vs2022/.vs/vs2022/v17/Browse.*
 Server/build/vs2022/.vs/vs2022/v17/Solution.*
+RecordAudio/code/openbsd
+RecordAudio/build/vs2022/app/AIA/x64
+RecordAudio/build/vs2022/.vs/vs2022/v17/Browse.*
+RecordAudio/build/vs2022/.vs/vs2022/v17/Solution.*
+PlayAudio/code/openbsd
+PlayAudio/build/vs2022/app/AIA/x64
+PlayAudio/build/vs2022/.vs/vs2022/v17/Browse.*
+PlayAudio/build/vs2022/.vs/vs2022/v17/Solution.*
