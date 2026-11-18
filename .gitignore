@@ -40,3 +40,12 @@ ShowText/code/openbsd
 ShowText/build/vs2022/app/AIA/x64
 ShowText/build/vs2022/.vs/vs2022/v17/Browse.*
 ShowText/build/vs2022/.vs/vs2022/v17/Solution.*
+WindowsTools/code/openbsd
+WindowsTools/tools
+WindowsTools/build/vs2022/app/AIA/x64
+WindowsTools/build/vs2022/.vs/vs2022/v17/Browse.*
+WindowsTools/build/vs2022/.vs/vs2022/v17/Solution.*
+MediaCenter/code/openbsd
+MediaCenter/build/vs2022/app/AIA/x64
+MediaCenter/build/vs2022/.vs/vs2022/v17/Browse.*
+MediaCenter/build/vs2022/.vs/vs2022/v17/Solution.*
