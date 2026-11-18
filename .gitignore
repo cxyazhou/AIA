@@ -11,6 +11,7 @@
 *.bin
 *.recipe
 *.txt
+__pycache__
 Manager/code/openbsd
 Manager/build/vs2022/app/AIA/x64
 Manager/build/vs2022/.vs/vs2022/v17/Browse.*
