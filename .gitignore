@@ -11,6 +11,10 @@
 *.bin
 *.recipe
 *.txt
+Manager/code/openbsd
+Manager/build/vs2022/app/AIA/x64
+Manager/build/vs2022/.vs/vs2022/v17/Browse.*
+Manager/build/vs2022/.vs/vs2022/v17/Solution.*
 Server/code/openbsd
 Server/build/vs2022/app/AIA/x64
 Server/build/vs2022/.vs/vs2022/v17/Browse.*
@@ -32,3 +36,7 @@ TTS/code/openbsd
 TTS/build/vs2022/app/AIA/x64
 TTS/build/vs2022/.vs/vs2022/v17/Browse.*
 TTS/build/vs2022/.vs/vs2022/v17/Solution.*
+ShowText/code/openbsd
+ShowText/build/vs2022/app/AIA/x64
+ShowText/build/vs2022/.vs/vs2022/v17/Browse.*
+ShowText/build/vs2022/.vs/vs2022/v17/Solution.*
